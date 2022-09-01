@@ -1,8 +1,9 @@
 """Blogly application."""
 
+from curses import flash
 from flask import Flask, render_template, redirect, request
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, User, connect_db
+from models import db, User, Post, connect_db
 
 app = Flask(__name__)
 
@@ -85,9 +86,64 @@ def delete_user(user_id):
 
     return redirect('/users')
 
-# @app.route('/species/<species_id>')
-# def show_pets_by_species(species_id):
-#     pets = Pet.get_by_species(species_id)
-#     return render_template('species.html', pets=pets, species=species_id)
+
+@app.route('/users/<int:user_id>/posts/new', methods=['GET'])
+def show_post_form(user_id):
+    '''Show new post form'''
+
+    user = User.query.get_or_404(user_id)
+    return render_template('post_form.html', user=user)
+
+@app.route('/users/<int:user_id>/posts/new', methods=['POST'])
+def create_post(user_id):
+    '''Create new post'''
+
+    user = User.query.get_or_404(user_id)
+    new_post = Post(title = request.form['title'], content = request.form['content'], created_by = user)
+
+    db.session.add(new_post)
+    db.session.commit()
+    flash(f'Post "{new_post.title}" Added')
+
+    return redirect(f'/users/{user.id}')
+
+@app.route('/posts/<int:post_id>')
+def show_post(post_id):
+    '''Show post details'''
+
+    post = Post.quert.get_or_404(post_id)
+    return render_template('post_detail.html', post=post)
+
+@app.route('/posts/<int:post_id>/edit', methods=['GET'])
+def show_post_edit_form(post_id):
+    '''Show post edit form'''
+
+    post = Post.quert.get_or_404(post_id)
+    return render_template('post_edit.html', post=post)
+
+@app.route('/posts/<int:post_id>/edit', methods=['POST'])
+def edit_post(post_id):
+    '''Edit Post'''
+
+    post = Post.quert.get_or_404(post_id)
+
+    post.title =  request.form['title']
+    post.content = request.form['content']
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/posts/{post.id}')
+
+@app.route('/posts/<int:post_id>/delete', methods=['POST'])
+def delete_post(post_id):
+    '''Delete Post'''
+
+    post = Post.quert.get_or_404(post_id)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect('/users')
 
 

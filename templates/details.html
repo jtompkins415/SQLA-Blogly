@@ -14,6 +14,24 @@
     <form>
     <button class="btn btn-info btn-sm" formaction="/users/{{user.id}}/edit">Edit User</button>
     <button class="btn btn-danger btn-sm" formaction="/users/{{user.id}}/delete">Delete User</button>
+    </form>
+    
+    <h3>Posts</h3>
+    <ul>
+        {% for post in user.posts %}
+        <li>
+            <a href="/posts/{{post.id}}">{{post.title}}</a>
+            <small>{{post.friendly_date}}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    <div>
+        <a href="/users/{{user.id}}/posts/new" class="btn btn-primary btn-sm">Create Post</a>
+    </div>
+
+    <form>
     <button class="btn btn-secondary btn-sm" formaction="/users">Go Back</button>
     </form>
+
+
 {% endblock %}
