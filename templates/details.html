@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{user.first_name}}{% endblock %}
+
+{% block content %}
+    <h2>User Details: {{user.first_name}} {{user.last_name}}</h2>
+    <img src="{{user.image_url}}" class="img-thumbnail" height="200" width="200" alt="user_photo">
+    <ul>
+        <li>User ID: {{user.id}}</li>
+        <li>First Name: {{user.first_name}}</li>
+        <li>Last Name: {{user.last_name}}</li>
+    </ul>
+
+    <form>
+    <button class="btn btn-info btn-sm" formaction="/users/{{user.id}}/edit">Edit User</button>
+    <button class="btn btn-danger btn-sm" formaction="/users/{{user.id}}/delete">Delete User</button>
+    <button class="btn btn-secondary btn-sm" formaction="/users">Go Back</button>
+    </form>
+{% endblock %}
