@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from curses import flash
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, User, Post, connect_db
 
@@ -22,7 +22,7 @@ db.create_all()
 def redirect_to_users():
     '''Redirect to list of users'''
     # users = User.query.all()
-    return redirect('/users', code = 200)
+    return redirect(url_for('list_users'))
 
 
 @app.route('/users')
