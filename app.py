@@ -105,7 +105,7 @@ def create_post(user_id):
     db.session.commit()
     flash(f'Post "{new_post.title}" Added')
 
-    return redirect(f'/users/{user.id}')
+    return redirect(f'/users/{user_id}')
 
 @app.route('/posts/<int:post_id>')
 def show_post(post_id):
