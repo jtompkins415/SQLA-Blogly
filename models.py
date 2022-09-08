@@ -38,11 +38,33 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, nullable = False, default =datetime.datetime.now)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
 
+    tags = db.relationship('Tag', secondary = "posts_tags", backref = 'posts')
+
     @property
     def friendly_date(self):
         '''Return well-formated date'''
 
         return self.created_at.strftime('%a %b %-d %Y, %-I:%M %p')
+
+class Tag(db.Model):
+    '''Tags for posts'''
+
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    tag_name = db.Column(db.Text, nullable = False, unique = True)
+
+
+class PostTag(db.Model):
+    '''Joins Posts and Tags'''
+
+    __tablename__ = 'posts_tags'
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'))
+    
+    __table_args__ = (db.PrimaryKeyConstraint(post_id, tag_id),)
+
 
 def  connect_db(app):
     '''Connect to a DB'''
