@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{post.title}} {% endblock %}
+
+{% block content %}
+<h1>Edit {{post.title}}</h1>
+
+<form method="post">
+    <label for="title">New Title:</label>
+    <input type="text" id="title" name="title" value="{{post.title}}">
+    <label for="content">New Content:</label>
+    <input type="text" id="content" name="content" value="{{post.content}}">
+    <div>
+        <button type="submit" class="btn btn-success btn-sm">Save Changes</button>
+    </div>
+</form>
+<form>
+    <button class="btn btn-secondary btn-sm" formaction="/users/{{post.users.id}}">Cancel Changes</button>
+</form>
+{% endblock %}

@@ -1,7 +1,6 @@
 """Blogly application."""
 
-from curses import flash
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, User, Post, connect_db
 
@@ -99,7 +98,7 @@ def create_post(user_id):
     '''Create new post'''
 
     user = User.query.get_or_404(user_id)
-    new_post = Post(title = request.form['title'], content = request.form['content'], created_by = user)
+    new_post = Post(title = request.form['title'], content = request.form['content'], created_by = user.id)
 
     db.session.add(new_post)
     db.session.commit()
@@ -111,21 +110,21 @@ def create_post(user_id):
 def show_post(post_id):
     '''Show post details'''
 
-    post = Post.quert.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
     return render_template('post_detail.html', post=post)
 
 @app.route('/posts/<int:post_id>/edit', methods=['GET'])
 def show_post_edit_form(post_id):
     '''Show post edit form'''
 
-    post = Post.quert.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
     return render_template('post_edit.html', post=post)
 
 @app.route('/posts/<int:post_id>/edit', methods=['POST'])
 def edit_post(post_id):
     '''Edit Post'''
 
-    post = Post.quert.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
 
     post.title =  request.form['title']
     post.content = request.form['content']
@@ -139,7 +138,7 @@ def edit_post(post_id):
 def delete_post(post_id):
     '''Delete Post'''
 
-    post = Post.quert.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
 
     db.session.delete(post)
     db.session.commit()
