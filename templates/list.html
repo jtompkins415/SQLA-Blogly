@@ -10,5 +10,8 @@
         <li><a href="/users/{{user.id}} ">{{user.first_name}} {{user.last_name}}</a></li>
     {% endfor %}
     </ul>
-   <p><a href="/users/new">Add User</a></p>
+   <form>
+    <button class="btn btn-primary btn-sm" formmethod="get" formaction="/users/new">Add User</button>
+    <button class="btn btn-success btn-sm" formmethod="get" formaction="/tags">Go To Tags</button>
+   </form>
     {% endblock %}
